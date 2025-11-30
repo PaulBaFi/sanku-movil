@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "723344906216",
+    "project_id": "sanku-pro",
+    "storage_bucket": "sanku-pro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723344906216:android:1a515415d953759c31f65d",
+        "android_client_info": {
+          "package_name": "com.example.sanku_pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkxbNT7c_6y0d-DfYiduzMDf9RzI119-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

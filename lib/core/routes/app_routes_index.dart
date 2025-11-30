@@ -1,0 +1,55 @@
+export 'package:sanku_pro/presentation/pages/home_page.dart';
+
+export 'package:sanku_pro/presentation/pages/auth/pages/signin_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/signup_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/change_password_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/delete_account_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/profile_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/reset_password_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/update_username_screen.dart';
+export 'package:sanku_pro/presentation/pages/auth/pages/welcome_screen.dart';
+
+export 'package:sanku_pro/entities/usuarios/pages/usuarios_page.dart';
+export 'package:sanku_pro/entities/usuarios/pages/usuarios_add_page.dart';
+export 'package:sanku_pro/entities/usuarios/pages/usuarios_edit_page.dart';
+export 'package:sanku_pro/entities/usuarios/pages/usuario_detalle_page.dart';
+export 'package:sanku_pro/entities/tipo_empleado/pages/tipo_empleado_page.dart';
+export 'package:sanku_pro/entities/tipo_empleado/pages/tipo_empleado_add_page.dart';
+export 'package:sanku_pro/entities/tipo_empleado/pages/tipo_empleado_edit_page.dart';
+export 'package:sanku_pro/entities/especialidades/pages/especialidades_page.dart';
+export 'package:sanku_pro/entities/especialidades/pages/especialidades_add_page.dart';
+export 'package:sanku_pro/entities/especialidades/pages/especialidades_edit_page.dart';
+export 'package:sanku_pro/entities/empleados/pages/empleados_page.dart';
+export 'package:sanku_pro/entities/empleados/pages/empleado_detalle_page.dart';
+export 'package:sanku_pro/entities/empleados/pages/empleados_add_page.dart';
+export 'package:sanku_pro/entities/empleados/pages/empleados_edit_page.dart';
+export 'package:sanku_pro/entities/paquetes/pages/paquetes_page.dart';
+export 'package:sanku_pro/entities/paquetes/pages/paquete_add_page.dart';
+export 'package:sanku_pro/entities/paquetes/pages/paquete_edit_page.dart';
+export 'package:sanku_pro/entities/servicios/pages/servicios_page.dart';
+export 'package:sanku_pro/entities/servicios/pages/servicios_add_page.dart';
+export 'package:sanku_pro/entities/servicios/pages/servicios_edit_page.dart';
+export 'package:sanku_pro/entities/medios_pago/pages/medios_pago_page.dart';
+export 'package:sanku_pro/entities/medios_pago/pages/medio_pago_add_page.dart';
+export 'package:sanku_pro/entities/medios_pago/pages/medio_pago_edit_page.dart';
+export 'package:sanku_pro/entities/notificaciones/pages/notificaciones_page.dart';
+export 'package:sanku_pro/entities/notificaciones/pages/clasificaciones_add_page.dart';
+export 'package:sanku_pro/entities/notificaciones/pages/clasificaciones_edit_page.dart';
+export 'package:sanku_pro/entities/notificaciones/pages/medio_envio_add_page.dart';
+export 'package:sanku_pro/entities/notificaciones/pages/medio_envio_edit_page.dart';
+export 'package:sanku_pro/entities/clientes/pages/clientes_page.dart';
+export 'package:sanku_pro/entities/clientes/pages/cliente_detalle_page.dart';
+export 'package:sanku_pro/entities/clientes/pages/cliente_add_page.dart';
+export 'package:sanku_pro/entities/clientes/pages/cliente_edit_page.dart';
+
+export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_page.dart';
+export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_detalle_page.dart';
+export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_add_page.dart';
+export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_edit_page.dart';
+
+export 'package:sanku_pro/entities/pagos/pages/pagos_page.dart';
+export 'package:sanku_pro/entities/pagos/pages/pago_detalle_page.dart';
+
+export 'package:sanku_pro/entities/agenda/pages/agenda_page.dart';
+
+export 'app_routes.dart';

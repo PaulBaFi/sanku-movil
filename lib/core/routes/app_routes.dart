@@ -1,0 +1,60 @@
+class AppRoutes {
+  static const String signin = '/signin';
+  static const String signup = '/signup';
+  static const String changePassword = '/change_password';
+  static const String deleteAccount = '/delete_account';
+  static const String forgetPassword = '/forget_password';
+  static const String profileScreen = '/profile_screen';
+  static const String resetPassword = '/reset_password';
+  static const String updateUsername = '/update_username';
+  static const String welcome = '/welcome';
+  static const String home = '/home';
+
+  static const String usuarios = '/usuarios';
+  static const String usuarioDetalle = '/usuario_detalle';
+  static const String usuariosAdd = '/usuarios_add';
+  static const String usuariosEdit = '/usuarios_edit';
+  static const String tipoEmpleado = '/tipo_empleado';
+  static const String tipoEmpleadoAdd = '/tipo_empleado_add';
+  static const String tipoEmpleadoEdit = '/tipo_empleado_edit';
+  static const String especialidades = '/especialidades';
+  static const String especialidadesAdd = '/especialidad_add';
+  static const String especialidadesEdit = '/especialidad_edit';
+  static const String empleados = '/empleados';
+  static const String empleadoDetalle = '/empleado_detalle';
+  static const String empleadosAdd = '/empleados_add';
+  static const String empleadosEdit = '/empleados_edit';
+  static const String paquetes = '/paquetes';
+  static const String paqueteAdd = '/paquete_add';
+  static const String paqueteEdit = '/paquete_edit';
+  static const String servicios = '/servicios';
+  static const String servicioAdd = '/servicio_add';
+  static const String servicioEdit = '/servicio_edit';
+  static const String mediosPago = '/medios_pago';
+  static const String medioPagoAdd = '/medio_pago_add';
+  static const String medioPagoEdit = '/medio_pago_edit';
+  static const String notificaciones = '/notificaciones';
+  static const String clasificacionesAddPage = '/clasificaciones_add';
+  static const String clasificacionesEditPage = '/clasificaciones_edit';
+  static const String medioEnvioAddPage = '/medio_envio_add';
+  static const String medioEnvioEditPage = '/medio_envio_edit';
+  static const String clientes = '/clientes';
+  static const String clienteDetalle = '/cliente_detalle';
+  static const String clienteAdd = '/cliente_add';
+  static const String clienteEdit = '/cliente_edit';
+
+  static const String inscripciones = '/inscripciones';
+  static const String inscripcionesDetalle = '/inscripciones_detalle';
+  static const String inscripcionesAdd = '/inscripciones_add';
+  static const String inscripcionesEdit = '/inscripciones_edit';
+  static const String agenda = '/agenda';
+
+  static const String pagos = '/pagos';
+  static const String pagoDetalle = '/pago_detalle';
+  
+  static const String roles = '/roles';
+  static const String seguimiento = '/seguimiento';
+  static const String historiales = '/historiales';
+  static const String sesiones = '/sesiones';
+  static const String listaEspera = '/lista_espera';
+}

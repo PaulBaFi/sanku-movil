@@ -300,6 +300,11 @@ class RouteManager {
         name: 'agenda',
         builder: (context, state) => const AgendaPage(),
       ),
+      GoRoute(
+        path: AppRoutes.configuraciones,
+        name: 'configuraciones',
+        builder: (context, state) => const ConfiguracionesPage(),
+      ),
 
       GoRoute(
         path: '/clientes/:id/sesiones',

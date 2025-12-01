@@ -160,6 +160,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                       _textButton(() {
                         context.push(AppRoutes.updateUsername);
                       }, 'Actualizar mi nombre de usuario'),
+                      SizedBox(height: 12),
+                      _textButton(() {
+                        context.push(AppRoutes.configuraciones);
+                      }, 'Cambiar tema de la aplicación'),
                     ],
                   ),
                 ),

@@ -50,6 +50,7 @@ class AppRoutes {
   static const String pagos = '/pagos';
   static const String pagoDetalle = '/pago_detalle';
   static const String sesionProgramar = '/sesiones/programar';
+  static const String configuraciones = '/configuraciones';
 
   static const String roles = '/roles';
   static const String seguimiento = '/seguimiento';

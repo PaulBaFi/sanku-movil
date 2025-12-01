@@ -48,4 +48,5 @@ export 'package:sanku_pro/entities/pagos/pages/pago_detalle_page.dart';
 export 'package:sanku_pro/entities/sesiones/pages/cliente_sesiones_page.dart';
 export 'package:sanku_pro/entities/sesiones/pages/sesion_programar_page.dart';
 export 'package:sanku_pro/entities/agenda/pages/agenda_page.dart';
+export 'package:sanku_pro/presentation/pages/configuraciones_page.dart';
 export 'app_routes.dart';

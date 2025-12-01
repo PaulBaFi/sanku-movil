@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                   color: Color(0xFFFFF7E4),
                   padding: EdgeInsets.all(8),
                   child: Text(
-                    "Bienvenido, ${authService.value.currentUser!.displayName}",
+                    "Hola, ${authService.value.currentUser!.displayName}",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),

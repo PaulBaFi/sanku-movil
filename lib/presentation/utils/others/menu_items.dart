@@ -47,21 +47,15 @@ final List<Map<String, dynamic>> menuItems = [
     'label': 'Ver más',
     'action': (BuildContext context) => openMenu(context, itemsSinVerMas),
   },
-
   {
-    'icon': Icons.track_changes_outlined,
-    'label': 'Seguimiento',
-    'action': (BuildContext context) => context.push(AppRoutes.seguimiento),
+    'icon': Icons.design_services_outlined,
+    'label': 'Servicios',
+    'action': (BuildContext context) => context.push(AppRoutes.servicios),
   },
   {
     'icon': Icons.account_balance_wallet_outlined,
     'label': 'Medios de pago',
     'action': (BuildContext context) => context.push(AppRoutes.mediosPago),
-  },
-  {
-    'icon': Icons.design_services_outlined,
-    'label': 'Servicios',
-    'action': (BuildContext context) => context.push(AppRoutes.servicios),
   },
   {
     'icon': Icons.inventory_outlined,
@@ -71,8 +65,15 @@ final List<Map<String, dynamic>> menuItems = [
   {
     'icon': Icons.history_outlined,
     'label': 'Historiales',
-    'action': (BuildContext context) => context.push(AppRoutes.historiales),
+    'action': (BuildContext context) => context.push(AppRoutes.inscripciones),
   },
+  /*
+  {
+    'icon': Icons.track_changes_outlined,
+    'label': 'Seguimiento',
+    'action': (BuildContext context) => context.push(AppRoutes.seguimiento),
+  },
+  
   {
     'icon': Icons.event_available_outlined,
     'label': 'Sesiones',
@@ -83,16 +84,19 @@ final List<Map<String, dynamic>> menuItems = [
     'label': 'Roles',
     'action': (BuildContext context) => context.push(AppRoutes.roles),
   },
+  */
   {
     'icon': Icons.work_outline_outlined,
     'label': 'Tipos de empleado',
     'action': (BuildContext context) => context.push(AppRoutes.tipoEmpleado),
   },
+  /*
   {
     'icon': Icons.list_alt_outlined,
     'label': 'Lista de espera',
     'action': (BuildContext context) => context.push(AppRoutes.listaEspera),
   },
+  */
   {
     'icon': Icons.local_hospital_outlined,
     'label': 'Especialidades',

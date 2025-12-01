@@ -10,7 +10,7 @@ void openMenu(BuildContext context, List<Map<String, dynamic>> items) {
     ),
     builder: (context) {
       return Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(top: 16, bottom: 40, left: 16, right: 16),
         child: GridView.count(
           crossAxisCount: 4,
           shrinkWrap: true,

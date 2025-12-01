@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:sanku_pro/core/constants/app_colors.dart';
 import 'package:sanku_pro/core/constants/app_dimensions.dart';
 import 'package:sanku_pro/core/routes/app_routes.dart';
 import 'package:sanku_pro/entities/inscripciones/services/inscripciones_firebase_service.dart';
@@ -96,10 +97,6 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Datos de la inscripción
-    final fechaInicio = inscripcion['fechaInicio'] ?? '';
-    final fechaFin = inscripcion['fechaFin'] ?? '';
-
     // Datos relacionados
     final cliente = inscripcion['cliente'] as Map<String, dynamic>?;
     final empleado = inscripcion['empleado'] as Map<String, dynamic>?;
@@ -113,7 +110,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
         : 'No disponible';
     final clienteEmail = cliente?['email'] ?? '';
     final clienteContacto = cliente?['contacto'] ?? '';
-    final clienteAvatarUrl = cliente?['avatarUrl'] ?? '';
+    // final clienteAvatarUrl = cliente?['avatarUrl'] ?? '';
 
     // Extraer información del empleado
     final empleadoNombre = empleado != null
@@ -136,38 +133,13 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
         child: WidgetDetailsLayout(
           child: Column(
             children: [
-              // Avatar del cliente
-              CircleAvatar(
-                radius: 48,
-                backgroundImage: clienteAvatarUrl.isNotEmpty
-                    ? NetworkImage(clienteAvatarUrl)
-                    : null,
-                child: clienteAvatarUrl.isEmpty
-                    ? const Icon(Icons.person, size: 48)
-                    : null,
-              ),
-              const SizedBox(height: 16),
-
-              Text(
-                clienteNombre,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
-              const SizedBox(height: AppDimensions.marginM),
-
               // ========== SECCIÓN RESUMEN FINANCIERO ==========
               _sectionTitle("Resumen Financiero"),
 
               if (_isLoadingResumen)
                 const Center(
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(12),
                     child: CircularProgressIndicator(),
                   ),
                 )
@@ -191,7 +163,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
               ],
 
               const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
+              const Divider(thickness: 0.7, color: AppColors.grey),
               const SizedBox(height: AppDimensions.marginM),
 
               // ========== HISTORIAL DE PAGOS ==========
@@ -200,7 +172,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
                 const SizedBox(height: 12),
                 ...pagos.map((pago) => _buildPagoCard(pago)),
                 const SizedBox(height: AppDimensions.marginS),
-                const Divider(thickness: 0.7),
+                const Divider(thickness: 0.7, color: AppColors.grey),
                 const SizedBox(height: AppDimensions.marginM),
               ],
 
@@ -211,7 +183,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
               _infoTile("Contacto", clienteContacto),
 
               const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
+              const Divider(thickness: 0.7, color: AppColors.grey),
               const SizedBox(height: AppDimensions.marginM),
 
               // SECCIÓN DATOS DEL PAQUETE
@@ -224,17 +196,15 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
               _infoTile("Número de sesiones", paqueteSesiones),
 
               const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
+              const Divider(thickness: 0.7, color: AppColors.grey),
               const SizedBox(height: AppDimensions.marginM),
 
               // SECCIÓN DATOS DE LA INSCRIPCIÓN
               _sectionTitle("Datos de la Inscripción"),
-              _infoTile("Fecha de inicio", fechaInicio),
-              _infoTile("Fecha de fin", fechaFin),
               _infoTile("Medio de pago inicial", medioPagoNombre),
 
               const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
+              const Divider(thickness: 0.7, color: AppColors.grey),
               const SizedBox(height: AppDimensions.marginM),
 
               // SECCIÓN EMPLEADO ASIGNADO
@@ -243,7 +213,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
               _infoTile("Email", empleadoEmail),
 
               const SizedBox(height: AppDimensions.marginS),
-              const Divider(thickness: 0.7),
+              const Divider(thickness: 0.7, color: AppColors.grey),
               const SizedBox(height: AppDimensions.marginM),
 
               WidgetButton(
@@ -312,7 +282,7 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
           ),
 
           const SizedBox(height: 16),
-          const Divider(),
+          const Divider(thickness: 0.7, color: AppColors.grey),
           const SizedBox(height: 12),
 
           // Detalles financieros
@@ -423,25 +393,27 @@ class _InscripcionesDetallePageState extends State<InscripcionesDetallePage> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 8),
             Text('Método: $metodoPagoNombre'),
             Text('Fecha: $fechaFormateada'),
-          ],
-        ),
-        trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: _getEstadoColor(estado).withAlpha(25),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: _getEstadoColor(estado)),
-          ),
-          child: Text(
-            estado.toUpperCase(),
-            style: TextStyle(
-              color: _getEstadoColor(estado),
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
+            SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: _getEstadoColor(estado).withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: _getEstadoColor(estado)),
+              ),
+              child: Text(
+                estado.toUpperCase(),
+                style: TextStyle(
+                  color: _getEstadoColor(estado),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

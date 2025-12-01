@@ -112,6 +112,46 @@ Future<Map<String, dynamic>?> getPagoById(String id) async {
   };
 }
 
+/// Obtener pagos por inscripción (sin orderBy para evitar índice)
+Future<List<Map<String, dynamic>>> getPagosByInscripcion(
+  String inscripcionId,
+) async {
+  try {
+    // Consulta SIN orderBy para evitar necesidad de índice
+    QuerySnapshot query = await db
+        .collection('pagos')
+        .where('inscripcion_id', isEqualTo: inscripcionId)
+        .get();
+
+    List<Map<String, dynamic>> pagos = [];
+
+    for (var doc in query.docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      pagos.add({"id": doc.id, ...data});
+    }
+
+    // Ordenar en memoria por fecha_pago
+    pagos.sort((a, b) {
+      final fechaA = a['fecha_pago'];
+      final fechaB = b['fecha_pago'];
+
+      if (fechaA == null) return 1;
+      if (fechaB == null) return -1;
+
+      if (fechaA is Timestamp && fechaB is Timestamp) {
+        return fechaA.compareTo(fechaB);
+      }
+
+      return 0;
+    });
+
+    return pagos;
+  } catch (e) {
+    debugPrint('Error al obtener pagos por inscripción: $e');
+    return [];
+  }
+}
+/*
 // Obtener pagos por inscripción
 Future<List<Map<String, dynamic>>> getPagosByInscripcion(
   String inscripcionId,
@@ -157,6 +197,7 @@ Future<List<Map<String, dynamic>>> getPagosByInscripcion(
 
   return pagos;
 }
+*/
 
 // ==================== GENERACIÓN DE QR CODE ====================
 
@@ -166,7 +207,7 @@ Future<String> generarQRCode(
   String pagoId,
   Map<String, dynamic> datosPago,
 ) async {
-  try { 
+  try {
     // Crear la data que irá en el QR (formato JSON)
     final qrData = {
       "tipo": "comprobante_pago",

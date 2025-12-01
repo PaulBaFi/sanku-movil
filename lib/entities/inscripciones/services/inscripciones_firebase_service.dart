@@ -317,3 +317,4 @@ Future<List<Map<String, dynamic>>> getInscripcionesConPendientes() async {
 
   return conPendientes;
 }
+  

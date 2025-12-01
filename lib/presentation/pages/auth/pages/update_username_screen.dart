@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sanku_pro/core/constants/app_strings.dart';
 import 'package:sanku_pro/core/constants/app_text_styles.dart';
 import 'package:sanku_pro/presentation/components/custom_scaffold.dart';
@@ -20,6 +21,14 @@ class _UpdateUsernameScreenState extends State<UpdateUsernameScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   String errorMessage = '';
 
+  final user = authService.value.currentUser;
+
+  @override
+  void initState() {
+    _controllerUsername.text = user!.displayName!;
+    super.initState();
+  }
+
   @override
   void dispose() {
     _controllerUsername.dispose();
@@ -32,6 +41,8 @@ class _UpdateUsernameScreenState extends State<UpdateUsernameScreen> {
         username: _controllerUsername.text,
       );
       showSnackBarSuccess();
+      // ignore: use_build_context_synchronously
+      context.pop();
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message ?? 'Ha ocurrido un error';

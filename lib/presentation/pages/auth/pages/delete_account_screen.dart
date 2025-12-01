@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sanku_pro/core/constants/app_colors.dart';
+import 'package:sanku_pro/core/constants/app_strings.dart';
+import 'package:sanku_pro/core/constants/app_text_styles.dart';
 import 'package:sanku_pro/presentation/components/custom_scaffold.dart';
 import 'package:sanku_pro/presentation/pages/auth/pages/welcome_screen.dart';
 import 'package:sanku_pro/presentation/pages/auth/services/auth_firebase_service.dart';
+import 'package:sanku_pro/presentation/widgets/widget_button.dart';
+import 'package:sanku_pro/presentation/widgets/widget_field.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
   const DeleteAccountScreen({super.key});
@@ -36,7 +40,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       setState(() {
-        errorMessage = e.message ?? 'An error occurred';
+        errorMessage = e.message ?? 'Ha ocurrido un error.';
       });
       ScaffoldMessenger.of(
         context,
@@ -50,7 +54,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
       SnackBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         behavior: SnackBarBehavior.floating,
-        content: Text("Account Deleted Successfully."),
+        content: Text("Cuenta eliminada correctamente."),
         showCloseIcon: true,
       ),
     );
@@ -80,80 +84,56 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Delete account',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.backgroundLight,
-                        ),
+                        'Eliminar mi cuenta',
+                        style: AppTextStyles.textTheme.headlineLarge,
                       ),
                       SizedBox(height: 30.0),
-                      TextFormField(
+                      WidgetField(
+                        labelText: "Correo electrónico",
+                        hintText: 'Ingrese su correo electrónico.',
                         controller: _controllerEmail,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Por favor, ingrese su correo electrónico.';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text("Email"),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
                       ),
-                      SizedBox(height: 25.0),
-                      TextFormField(
+                      WidgetField(
                         controller: _controllerPassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
+                        labelText: 'Contraseña',
+                        hintText: 'Ingrese su contraseña',
+                        isPassword: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
+                            return 'Por favor, ingrese su contraseña.';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text('Password'),
-                          hintText: 'Enter Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
                       ),
                       SizedBox(height: 25.0),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: WidgetButtonAlert(
                           onPressed: () {
                             if (_formSignInKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Processing Data"),
+                                  content: Text(AppStrings.procesandoData),
                                 ),
                               );
                               deleteAccount();
                             }
                           },
-                          child: const Text("Delete Account"),
+                          text: "Eliminar cuenta",
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        "Los cambios serán irreversibles, se eliminará la cuenta permanentemente.",
+                        style: TextStyle(
+                          color: AppColors.error.withAlpha(150),
+                          fontSize: 14,
                         ),
                       ),
                       SizedBox(height: 40.0),

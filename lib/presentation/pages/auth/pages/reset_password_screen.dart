@@ -40,7 +40,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       showSnackBar();
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message ?? 'An error occurred';
+        errorMessage = e.message ?? 'Ha ocurrido un error';
       });
       ScaffoldMessenger.of(
         // ignore: use_build_context_synchronously
@@ -54,7 +54,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        content: Text("Please check your Email"),
+        content: Text("Por favor, verifica tu correo electrónico."),
         showCloseIcon: true,
       ),
     );
@@ -93,7 +93,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         labelText: 'Email',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Por favor, ingresa tu correo electrónico.';
                           }
                           return null;
                         },

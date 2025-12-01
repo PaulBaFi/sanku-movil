@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sanku_pro/core/constants/app_colors.dart';
+import 'package:sanku_pro/core/constants/app_strings.dart';
+import 'package:sanku_pro/core/constants/app_text_styles.dart';
 import 'package:sanku_pro/presentation/components/custom_scaffold.dart';
 import 'package:sanku_pro/presentation/pages/auth/services/auth_firebase_service.dart';
+import 'package:sanku_pro/presentation/widgets/widget_button.dart';
+import 'package:sanku_pro/presentation/widgets/widget_field.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -28,7 +31,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   void updatePassword() async {
-    
     try {
       await authService.value.resetPasswordFromCurrentPassword(
         currentPassword: _controllerPassword.text,
@@ -40,7 +42,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message ?? 'An error occurred';
+        errorMessage = e.message ?? 'Ha ocurrido un error.';
       });
       ScaffoldMessenger.of(
         // ignore: use_build_context_synchronously
@@ -55,7 +57,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       SnackBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         behavior: SnackBarBehavior.floating,
-        content: Text("Password Changed Successfully"),
+        content: Text("Contraseña cambiada correctamente."),
         showCloseIcon: true,
       ),
     );
@@ -85,108 +87,60 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Change password!',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.backgroundLight,
-                        ),
+                        'Cambiar mi contraseña',
+                        style: AppTextStyles.textTheme.headlineLarge,
                       ),
                       SizedBox(height: 30.0),
-                      TextFormField(
+                      WidgetField(
+                        labelText: "Email",
+                        hintText: 'Ingrese su correo electrónico',
                         controller: _controllerEmail,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Por favor, ingrese su correo electrónico';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text("Email"),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
                       ),
-                      SizedBox(height: 25.0),
-                      TextFormField(
+                      WidgetField(
+                        labelText: 'Password',
+                        hintText: 'Ingrese su contraseña',
                         controller: _controllerPassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
+                        isPassword: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
+                            return 'Por favor, ingrese su contraseña';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text('Password'),
-                          hintText: 'Enter Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                      ),
+                      WidgetField(
+                        labelText: "Nueva contraseña",
+                        hintText: 'Ingrese su nueva contraseña',
+                        controller: _controllerNewPassword,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingrese su nueva contraseña';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 25.0),
-                      TextFormField(
-                        controller: _controllerNewPassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a new Password';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          label: const Text('New Password'),
-                          hintText: 'Enter New Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: WidgetButton(
                           onPressed: () {
                             if (_formSignInKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Processing Data"),
+                                  content: Text(AppStrings.procesandoData),
                                 ),
                               );
                               updatePassword();
                             }
                           },
-                          child: const Text("Reset Password"),
+                          text: "Restablecer contraseña",
                         ),
                       ),
                       SizedBox(height: 40.0),

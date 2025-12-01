@@ -28,6 +28,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   void updatePassword() async {
+    
     try {
       await authService.value.resetPasswordFromCurrentPassword(
         currentPassword: _controllerPassword.text,

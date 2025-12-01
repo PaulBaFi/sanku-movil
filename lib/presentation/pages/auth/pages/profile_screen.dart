@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sanku_pro/core/constants/app_colors.dart';
 import 'package:sanku_pro/core/constants/app_dimensions.dart';
 import 'package:sanku_pro/core/routes/app_routes_index.dart';
 import 'package:sanku_pro/presentation/pages/auth/services/auth_firebase_service.dart';
@@ -140,10 +141,25 @@ class ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(height: 16),
                       _buildInfoRow('Correo', user?.email ?? 'No definido'),
                       SizedBox(height: 12),
-                      _buildInfoRow('Contraseña', '••••••••••••'),
+                      _buildInfoRow('Contraseña', '**********'),
                       SizedBox(height: 16),
                       sectionTitle(title: "Configuración"),
                       SizedBox(height: 16),
+                      _textButton(() {
+                        context.push(AppRoutes.changePassword);
+                      }, 'Cambiar contraseña'),
+                      SizedBox(height: 12),
+                      _textButton(() {
+                        context.push(AppRoutes.forgetPassword);
+                      }, 'Olvidé mi contraseña'),
+                      SizedBox(height: 12),
+                      _textButton(() {
+                        context.push(AppRoutes.resetPassword);
+                      }, 'Reestablecer mi contraseña'),
+                      SizedBox(height: 12),
+                      _textButton(() {
+                        context.push(AppRoutes.updateUsername);
+                      }, 'Actualizar mi nombre de usuario'),
                     ],
                   ),
                 ),
@@ -154,25 +170,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          context.push(AppRoutes.updateUsername);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          side: BorderSide(color: Colors.grey[300]!),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(
-                          'Actualizar mi información de usuario',
-                          style: TextStyle(color: Colors.black87, fontSize: 14),
-                        ),
-                      ),
-                      SizedBox(height: 12),
                       TextButton(
                         onPressed: () {
                           context.push(AppRoutes.deleteAccount);
@@ -189,12 +188,11 @@ class ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                SizedBox(height: 40),
-
                 // Footer
                 Container(
                   padding: EdgeInsets.all(20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Versión 1.13.0',
@@ -209,7 +207,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                       InkWell(
                         onTap: logout,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.logout, color: Colors.orange, size: 20),
                             SizedBox(width: 8),
@@ -229,6 +226,22 @@ class ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  SizedBox _textButton(onPressed, String text) {
+    return SizedBox(
+      width: double.infinity,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.textMutedLight, // Color del texto e ícono
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Text(text, style: TextStyle(fontSize: 14),), const Icon(Icons.arrow_forward_ios_rounded)],
         ),
       ),
     );

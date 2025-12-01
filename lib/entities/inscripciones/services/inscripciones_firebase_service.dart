@@ -1,4 +1,3 @@
-// inscripciones_firebase_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sanku_pro/entities/clientes/services/clientes_firebase_service.dart';
@@ -6,6 +5,7 @@ import 'package:sanku_pro/entities/empleados/services/empleados_firebase_service
 import 'package:sanku_pro/entities/paquetes/services/paquetes_firebase_service.dart';
 import 'package:sanku_pro/entities/medios_pago/services/medios_pago_firebase_service.dart';
 import 'package:sanku_pro/entities/pagos/services/pagos_firebase_service.dart';
+import 'package:sanku_pro/entities/sesiones/services/sesiones_firebase_service.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -63,56 +63,112 @@ Future<Map<String, dynamic>?> getInscripcionById(String id) async {
   return {"id": doc.id, ...data};
 }
 
-/// Agregar inscripción y crear pago automáticamente
+/// Agregar inscripción y crear sesiones automáticamente
 Future<String> addInscripcion(
   Map<String, dynamic> inscripcion, {
   bool generarQR = true,
   String? logoUrl,
 }) async {
   try {
-    // 1. Crear la inscripción
-    DocumentReference inscripcionRef = await db
-        .collection('inscripciones')
-        .add({
-          "clienteId": inscripcion["clienteId"],
-          "empleadoId": inscripcion["empleadoId"],
-          "paqueteId": inscripcion["paqueteId"],
-          "fechaInicio": inscripcion["fechaInicio"],
-          "fechaFin": inscripcion["fechaFin"],
-          "medioPagoId": inscripcion["medioPagoId"],
-          "montoCancelado": inscripcion["montoCancelado"] ?? 0.0,
-          "creadoEn": FieldValue.serverTimestamp(),
-        });
+    // 1. Obtener datos del paquete para saber cuántas sesiones crear
+    final paquete = await getPaqueteById(inscripcion["paqueteId"]);
+
+    if (paquete == null) {
+      throw Exception('Paquete no encontrado');
+    }
+
+    final numeroSesiones = paquete["numero_sesiones"] ?? 0;
+    final duracionSesion = paquete["duracion_sesion"] ?? 60; // en minutos
+
+    // 2. Crear la inscripción
+    DocumentReference inscripcionRef = await db.collection('inscripciones').add(
+      {
+        "clienteId": inscripcion["clienteId"],
+        "empleadoId": inscripcion["empleadoId"],
+        "paqueteId": inscripcion["paqueteId"],
+        "fechaInscripcion":
+            inscripcion["fechaInscripcion"] ?? FieldValue.serverTimestamp(),
+        "medioPagoId": inscripcion["medioPagoId"],
+        "montoCancelado": inscripcion["montoCancelado"] ?? 0.0,
+        "estado": "activa", // activa, completada, cancelada
+        "creadoEn": FieldValue.serverTimestamp(),
+      },
+    );
 
     String inscripcionId = inscripcionRef.id;
 
-    // 2. Crear el pago automáticamente si hay monto cancelado
+    // 3. Crear sesiones automáticamente
+    if (numeroSesiones > 0) {
+      await _crearSesionesAutomaticas(
+        inscripcionId: inscripcionId,
+        clienteId: inscripcion["clienteId"],
+        empleadoId: inscripcion["empleadoId"],
+        paqueteId: inscripcion["paqueteId"],
+        numeroSesiones: numeroSesiones,
+        duracionMinutos: duracionSesion,
+      );
+    }
+
+    // 4. Crear el pago automáticamente si hay monto cancelado
     final montoCancelado = inscripcion["montoCancelado"] ?? 0.0;
 
     if (montoCancelado > 0) {
-      // Preparar datos del pago
       final datosPago = {
         "inscripcion_id": inscripcionId,
         "metodo_pago_id": inscripcion["medioPagoId"],
         "monto": montoCancelado,
         "fecha_pago":
-            inscripcion["fechaInicio"] ?? FieldValue.serverTimestamp(),
-        "estado": "completado", // Por defecto completado al crear inscripción
+            inscripcion["fechaInscripcion"] ?? FieldValue.serverTimestamp(),
+        "estado": "completado",
       };
 
-      // Crear pago con QR sin verificar que la inscripción existe (acabamos de crearla)
       await addPagoConQR(
         pago: datosPago,
         generarQR: generarQR,
         logoUrl: logoUrl,
-        verificarInscripcion:
-            false, // NO verificar porque acabamos de crear la inscripción
+        verificarInscripcion: false,
       );
     }
 
     return inscripcionId;
   } catch (e) {
     debugPrint('Error al agregar inscripción: $e');
+    rethrow;
+  }
+}
+
+/// Crear sesiones automáticamente para una inscripción
+Future<void> _crearSesionesAutomaticas({
+  required String inscripcionId,
+  required String clienteId,
+  required String empleadoId,
+  required String paqueteId,
+  required int numeroSesiones,
+  required int duracionMinutos,
+}) async {
+  try {
+    // Crear sesiones en estado "pendiente" sin fecha/hora asignada
+    for (int i = 1; i <= numeroSesiones; i++) {
+      await db.collection('sesiones').add({
+        "inscripcionId": inscripcionId,
+        "clienteId": clienteId,
+        "empleadoId": empleadoId,
+        "paqueteId": paqueteId,
+        "numeroSesion": i,
+        "duracionMinutos": duracionMinutos,
+        "estado": "pendiente", // pendiente, programada, completada, cancelada
+        "fecha": null, // Se asignará cuando se programe
+        "hora": null, // Se asignará cuando se programe
+        "notas": "",
+        "creadoEn": FieldValue.serverTimestamp(),
+      });
+    }
+
+    debugPrint(
+      '✅ $numeroSesiones sesiones creadas para inscripción $inscripcionId',
+    );
+  } catch (e) {
+    debugPrint('Error al crear sesiones automáticas: $e');
     rethrow;
   }
 }
@@ -215,18 +271,25 @@ Future<Map<String, dynamic>> getResumenFinanciero(String inscripcionId) async {
   }
 }
 
-/// Eliminar inscripción y sus pagos asociados
+/// Eliminar inscripción, sus pagos y sesiones asociadas
 Future<void> deleteInscripcion(String id) async {
   try {
-    // Obtener y eliminar todos los pagos asociados
+    // 1. Obtener y eliminar todos los pagos asociados
     final pagos = await getPagosByInscripcion(id);
-
     for (var pago in pagos) {
       await deletePago(pago["id"]);
     }
 
-    // Eliminar la inscripción
+    // 2. Obtener y eliminar todas las sesiones asociadas
+    final sesiones = await getSesionesByInscripcion(id);
+    for (var sesion in sesiones) {
+      await deleteSesion(sesion["id"]);
+    }
+
+    // 3. Eliminar la inscripción
     await db.collection('inscripciones').doc(id).delete();
+    
+    debugPrint('✅ Inscripción $id eliminada con ${pagos.length} pagos y ${sesiones.length} sesiones');
   } catch (e) {
     debugPrint('Error al eliminar inscripción: $e');
     rethrow;
@@ -254,98 +317,3 @@ Future<List<Map<String, dynamic>>> getInscripcionesConPendientes() async {
 
   return conPendientes;
 }
-
-/*
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sanku_pro/entities/clientes/services/clientes_firebase_service.dart';
-import 'package:sanku_pro/entities/empleados/services/empleados_firebase_service.dart';
-import 'package:sanku_pro/entities/paquetes/services/paquetes_firebase_service.dart';
-import 'package:sanku_pro/entities/medios_pago/services/medios_pago_firebase_service.dart';
-
-FirebaseFirestore db = FirebaseFirestore.instance;
-
-/// Obtener lista de inscripciones
-Future<List> getInscripciones() async {
-  List inscripciones = [];
-  QuerySnapshot query = await db.collection('inscripciones').get();
-
-  for (var doc in query.docs) {
-    final data = doc.data() as Map<String, dynamic>;
-    inscripciones.add({"id": doc.id, ...data});
-  }
-
-  return inscripciones;
-}
-
-/// Obtener inscripción completa con todos los detalles relacionados
-Future<Map<String, dynamic>?> getInscripcionCompleta(String id) async {
-  final doc = await db.collection('inscripciones').doc(id).get();
-
-  if (!doc.exists) return null;
-
-  final data = doc.data() as Map<String, dynamic>;
-
-  // Fetch de datos relacionados en paralelo para mejor performance
-  final results = await Future.wait([
-    getClienteById(data['clienteId']),
-    getEmpleadoById(data['empleadoId']),
-    getPaqueteById(data['paqueteId']),
-    getMedioPagoById(data['medioPagoId']),
-  ]);
-
-  return {
-    "id": doc.id,
-    ...data,
-    "cliente": results[0],
-    "empleado": results[1],
-    "paquete": results[2],
-    "medioPago": results[3],
-  };
-}
-
-/// Obtener inscripción por ID (solo datos básicos)
-Future<Map<String, dynamic>?> getInscripcionById(String id) async {
-  DocumentSnapshot doc = await db.collection('inscripciones').doc(id).get();
-
-  if (!doc.exists) return null;
-
-  final data = doc.data() as Map<String, dynamic>;
-
-  return {"id": doc.id, ...data};
-}
-
-/// Agregar inscripción
-Future<void> addInscripcion(Map<String, dynamic> inscripcion) async {
-  await db.collection('inscripciones').add({
-    "clienteId": inscripcion["clienteId"],
-    "empleadoId": inscripcion["empleadoId"],
-    "paqueteId": inscripcion["paqueteId"],
-    "fechaInicio": inscripcion["fechaInicio"],
-    "fechaFin": inscripcion["fechaFin"],
-    "medioPagoId": inscripcion["medioPagoId"],
-    "montoCancelado": inscripcion["montoCancelado"],
-    "creadoEn": FieldValue.serverTimestamp(),
-  });
-}
-
-/// Actualizar inscripción
-Future<void> updateInscripcion(
-  String id,
-  Map<String, dynamic> inscripcion,
-) async {
-  await db.collection('inscripciones').doc(id).update({
-    "clienteId": inscripcion["clienteId"],
-    "empleadoId": inscripcion["empleadoId"],
-    "paqueteId": inscripcion["paqueteId"],
-    "fechaInicio": inscripcion["fechaInicio"],
-    "fechaFin": inscripcion["fechaFin"],
-    "medioPagoId": inscripcion["medioPagoId"],
-    "montoCancelado": inscripcion["montoCancelado"],
-  });
-}
-
-/// Eliminar inscripción
-Future<void> deleteInscripcion(String id) async {
-  await db.collection('inscripciones').doc(id).delete();
-}
-*/

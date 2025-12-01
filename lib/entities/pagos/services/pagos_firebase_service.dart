@@ -6,8 +6,6 @@ import 'dart:typed_data';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-// ==================== FUNCIONES CRUD PAGOS ====================
-
 // Obtener lista de pagos
 Future<List<Map<String, dynamic>>> getPagos() async {
   List<Map<String, dynamic>> pagos = [];
@@ -168,7 +166,7 @@ Future<String> generarQRCode(
   String pagoId,
   Map<String, dynamic> datosPago,
 ) async {
-  try {
+  try { 
     // Crear la data que irá en el QR (formato JSON)
     final qrData = {
       "tipo": "comprobante_pago",

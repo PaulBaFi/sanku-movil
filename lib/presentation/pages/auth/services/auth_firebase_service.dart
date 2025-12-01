@@ -42,7 +42,7 @@ class AuthService {
     required String username,
   }) async {
     await currentUser!.updateDisplayName(username);
-    // await currentUser!.reload();
+    await currentUser!.reload();
   }
 
   Future<void> deleteAccount({

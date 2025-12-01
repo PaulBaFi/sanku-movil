@@ -1,5 +1,4 @@
 export 'package:sanku_pro/presentation/pages/home_page.dart';
-
 export 'package:sanku_pro/presentation/pages/auth/pages/signin_screen.dart';
 export 'package:sanku_pro/presentation/pages/auth/pages/signup_screen.dart';
 export 'package:sanku_pro/presentation/pages/auth/pages/change_password_screen.dart';
@@ -8,7 +7,6 @@ export 'package:sanku_pro/presentation/pages/auth/pages/profile_screen.dart';
 export 'package:sanku_pro/presentation/pages/auth/pages/reset_password_screen.dart';
 export 'package:sanku_pro/presentation/pages/auth/pages/update_username_screen.dart';
 export 'package:sanku_pro/presentation/pages/auth/pages/welcome_screen.dart';
-
 export 'package:sanku_pro/entities/usuarios/pages/usuarios_page.dart';
 export 'package:sanku_pro/entities/usuarios/pages/usuarios_add_page.dart';
 export 'package:sanku_pro/entities/usuarios/pages/usuarios_edit_page.dart';
@@ -41,15 +39,13 @@ export 'package:sanku_pro/entities/clientes/pages/clientes_page.dart';
 export 'package:sanku_pro/entities/clientes/pages/cliente_detalle_page.dart';
 export 'package:sanku_pro/entities/clientes/pages/cliente_add_page.dart';
 export 'package:sanku_pro/entities/clientes/pages/cliente_edit_page.dart';
-
 export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_page.dart';
 export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_detalle_page.dart';
 export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_add_page.dart';
 export 'package:sanku_pro/entities/inscripciones/pages/inscripciones_edit_page.dart';
-
 export 'package:sanku_pro/entities/pagos/pages/pagos_page.dart';
 export 'package:sanku_pro/entities/pagos/pages/pago_detalle_page.dart';
-
+export 'package:sanku_pro/entities/sesiones/pages/cliente_sesiones_page.dart';
+export 'package:sanku_pro/entities/sesiones/pages/sesion_programar_page.dart';
 export 'package:sanku_pro/entities/agenda/pages/agenda_page.dart';
-
 export 'app_routes.dart';

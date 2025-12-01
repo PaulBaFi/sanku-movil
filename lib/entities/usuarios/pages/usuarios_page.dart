@@ -111,7 +111,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
           }),
         ),
       ),
-      // TODO: VALIDACION DE VISIBILIDAD SOLO PARA ADMINS
       floatingActionButton: WidgetFAB(
         icon: Icons.add,
         tooltip: 'Agregar usuario',

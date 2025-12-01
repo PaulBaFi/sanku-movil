@@ -102,12 +102,31 @@ class _ClienteDetallePageState extends State<ClienteDetallePage> {
               const Divider(thickness: 0.7),
               const SizedBox(height: AppDimensions.marginM),
 
-              WidgetButton(
-                text: 'Editar cliente',
-                onPressed: () async {
-                  await context.push(AppRoutes.clienteEdit, extra: cliente);
-                  await _refresh(); // Recarga datos actualizados
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 8,
+                children: [
+                  WidgetButtonNeutral(
+                    text: 'Editar cliente',
+                    onPressed: () async {
+                      await context.push(AppRoutes.clienteEdit, extra: cliente);
+                      await _refresh();
+                    },
+                  ),
+                  WidgetButton(
+                    text: 'Sesiones',
+                    onPressed: () {
+                      context.pushNamed(
+                        'cliente-sesiones',
+                        pathParameters: {'id': cliente['id']},
+                        queryParameters: {
+                          'nombre':
+                              '${cliente['nombres']} ${cliente['apellidos']}',
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

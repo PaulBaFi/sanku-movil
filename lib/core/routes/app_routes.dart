@@ -42,16 +42,15 @@ class AppRoutes {
   static const String clienteDetalle = '/cliente_detalle';
   static const String clienteAdd = '/cliente_add';
   static const String clienteEdit = '/cliente_edit';
-
   static const String inscripciones = '/inscripciones';
   static const String inscripcionesDetalle = '/inscripciones_detalle';
   static const String inscripcionesAdd = '/inscripciones_add';
   static const String inscripcionesEdit = '/inscripciones_edit';
   static const String agenda = '/agenda';
-
   static const String pagos = '/pagos';
   static const String pagoDetalle = '/pago_detalle';
-  
+  static const String sesionProgramar = '/sesiones/programar';
+
   static const String roles = '/roles';
   static const String seguimiento = '/seguimiento';
   static const String historiales = '/historiales';

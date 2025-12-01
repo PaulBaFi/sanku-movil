@@ -28,13 +28,11 @@ class WidgetFieldDatePicker extends StatefulWidget {
 
 class _WidgetFieldDatePickerState extends State<WidgetFieldDatePicker> {
   Future<void> _pickDate() async {
-    final now = DateTime.now();
-
     final picked = await showDatePicker(
       context: context,
       initialDate: widget.initialDate ?? DateTime(2000),
       firstDate: widget.firstDate ?? DateTime(1900),
-      lastDate: widget.lastDate ?? now,
+      lastDate: widget.lastDate ?? DateTime(2100),
     );
 
     if (picked != null) {

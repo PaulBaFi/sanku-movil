@@ -300,6 +300,19 @@ class RouteManager {
         name: 'agenda',
         builder: (context, state) => const AgendaPage(),
       ),
+
+      GoRoute(
+        path: '/clientes/:id/sesiones',
+        name: 'cliente-sesiones',
+        builder: (context, state) {
+          final clienteId = state.pathParameters['id']!;
+          final clienteNombre = state.uri.queryParameters['nombre'] ?? '';
+          return ClienteSesionesPage(
+            clienteId: clienteId,
+            clienteNombre: clienteNombre,
+          );
+        },
+      ),
     ],
     errorBuilder: (context, state) => NotFoundPage(uri: state.uri.toString()),
   );

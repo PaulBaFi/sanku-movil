@@ -197,7 +197,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Expanded(
                             child: Divider(
                               thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withAlpha(50),
                             ),
                           ),
                           const Padding(
@@ -213,7 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Expanded(
                             child: Divider(
                               thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withAlpha(50),
                             ),
                           ),
                         ],

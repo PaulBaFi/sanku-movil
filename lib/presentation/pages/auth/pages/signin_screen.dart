@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sanku_pro/core/constants/app_colors.dart';
+import 'package:sanku_pro/core/constants/app_strings.dart';
+import 'package:sanku_pro/core/constants/app_text_styles.dart';
 import 'package:sanku_pro/presentation/pages/auth/pages/signup_screen.dart';
 import 'package:sanku_pro/presentation/pages/auth/services/auth_firebase_service.dart';
 import 'package:sanku_pro/presentation/pages/home_page.dart';
+import 'package:sanku_pro/presentation/widgets/widget_button.dart';
+import 'package:sanku_pro/presentation/widgets/widget_field.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -17,7 +21,6 @@ class _SigninScreenState extends State<SigninScreen> {
   final TextEditingController _controllerPassword = TextEditingController();
 
   final _formSignInKey = GlobalKey<FormState>();
-  bool rememberPassword = true;
   String errorMessage = '';
 
   @override
@@ -36,9 +39,10 @@ class _SigninScreenState extends State<SigninScreen> {
       navHome();
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message ?? 'An error occurred';
+        errorMessage = e.message ?? 'Ha ocurrido un error.';
       });
       ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
         context,
       ).showSnackBar(SnackBar(content: Text(errorMessage)));
     }
@@ -54,9 +58,13 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFF7E4),
       body: Column(
         children: [
-          Expanded(child: SizedBox(height: 10)),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.asset("assets/planta.png", height: 120),
+          ),
           Expanded(
             flex: 7,
             child: Container(
@@ -75,160 +83,54 @@ class _SigninScreenState extends State<SigninScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome back!',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.backgroundLight,
-                        ),
+                        '¡Bienvenido de vuelta!',
+                        style: AppTextStyles.textTheme.headlineLarge,
                       ),
                       SizedBox(height: 30.0),
-                      TextFormField(
+                      WidgetField(
+                        labelText: 'Correo electrónico',
                         controller: _controllerEmail,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Por favor, ingrese su correo electrónico.';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text("Email"),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
                       ),
-                      SizedBox(height: 20.0),
-                      TextFormField(
+                      WidgetField(
+                        labelText: 'Contraseña',
                         controller: _controllerPassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
+                            return 'Por favor, ingrese su contraseña.';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          label: const Text("Password"),
-                          hintText: 'Enter Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: rememberPassword,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    rememberPassword = value!;
-                                  });
-                                },
-                                activeColor: AppColors.backgroundLight,
-                              ),
-                              const Text(
-                                "Remember me",
-                                style: TextStyle(color: Colors.black45),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            child: Text(
-                              "Forget password?",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.backgroundLight,
-                              ),
-                            ),
-                          ),
-                        ],
+                        isPassword: true,
                       ),
                       SizedBox(height: 25.0),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: WidgetButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                            if (_formSignInKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Processing Data"),
+                                  content: Text(AppStrings.procesandoData),
                                 ),
                               );
                               signIn();
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Please agree to the process of personal account.",
-                                  ),
-                                ),
-                              );
                             }
                           },
-                          child: const Text("Sign up"),
+                          text: "Registrarse",
                         ),
                       ),
                       SizedBox(height: 40.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
-                            child: Text(
-                              "Sign up with",
-                              style: TextStyle(color: Colors.black45),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 40.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Icon(FontAwesome.apple_brand),
-                        ],
-                      ),
-                      SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
                           const Text(
-                            'Dont\'t have an account? ',
+                            '¿Aún no tienes una cuenta? ',
                             style: TextStyle(color: Colors.black45),
                           ),
                           GestureDetector(
@@ -241,9 +143,9 @@ class _SigninScreenState extends State<SigninScreen> {
                               );
                             },
                             child: Text(
-                              'Sign up',
+                              'Registrarse',
                               style: TextStyle(
-                                color: AppColors.backgroundLight,
+                                color: AppColors.secondary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

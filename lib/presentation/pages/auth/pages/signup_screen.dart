@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sanku_pro/core/constants/app_colors.dart';
+import 'package:sanku_pro/core/constants/app_text_styles.dart';
 import 'package:sanku_pro/presentation/pages/auth/pages/signin_screen.dart';
 import 'package:sanku_pro/presentation/pages/auth/services/auth_firebase_service.dart';
+import 'package:sanku_pro/presentation/widgets/widget_button.dart';
+import 'package:sanku_pro/presentation/widgets/widget_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -32,209 +35,125 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      popPage();
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message ?? 'An error occurred';
-      });
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(errorMessage)));
-    }
-  }
 
-  void popPage() {
-    Navigator.pop(context);
+      if (!mounted) return;
+      Navigator.pop(context);
+
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      setState(() => errorMessage = e.message ?? 'Ocurrió un error');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFF7E4),
       body: Column(
         children: [
-          const Expanded(flex: 1, child: SizedBox(height: 10)),
+           Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.asset("assets/planta.png", height: 120),
+          ),
           Expanded(
             flex: 7,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
+              padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
               ),
               child: SingleChildScrollView(
-                // get started form
                 child: Form(
                   key: _formSignupKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Get Started',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.backgroundLight,
-                        ),
+                        'Crear cuenta',
+                        style: AppTextStyles.textTheme.headlineLarge,
                       ),
-                      const SizedBox(height: 40.0),
-                      TextFormField(
+                      const SizedBox(height: 30),
+
+                      WidgetField(
+                        labelText: 'Correo electrónico',
                         controller: _controllerEmail,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          label: const Text('Email'),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                        validator: (value) =>
+                            (value == null || value.isEmpty)
+                                ? 'Ingrese un correo electrónico.'
+                                : null,
                       ),
-                      const SizedBox(height: 25.0),
-                      TextFormField(
+
+                      WidgetField(
+                        labelText: 'Contraseña',
                         controller: _controllerPassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          label: const Text('Password'),
-                          hintText: 'Enter Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                        validator: (value) =>
+                            (value == null || value.isEmpty)
+                                ? 'Ingrese una contraseña.'
+                                : null,
+                        isPassword: true,
                       ),
-                      const SizedBox(height: 25.0),
-                      // i agree to the processing
+
+                      const SizedBox(height: 20),
+
                       Row(
                         children: [
                           Checkbox(
                             value: agreePersonalData,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                agreePersonalData = value!;
-                              });
-                            },
+                            onChanged: (v) => setState(() {
+                              agreePersonalData = v!;
+                            }),
                             activeColor: AppColors.backgroundLight,
                           ),
-                          const Text(
-                            'I agree to the processing of ',
-                            style: TextStyle(color: Colors.black45),
-                          ),
-                          Text(
-                            'Personal data',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.backgroundLight,
+                          const Expanded(
+                            child: Text(
+                              'Acepto el uso de mis datos personales.',
+                              style: TextStyle(color: Colors.black54),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 25.0),
-                      // signup button
+
+                      const SizedBox(height: 20),
+
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: WidgetButton(
+                          text: "Crear cuenta",
                           onPressed: () {
                             if (_formSignupKey.currentState!.validate() &&
                                 agreePersonalData) {
-                              signup();
-
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Processing Data'),
+                                  content: Text('Procesando datos...'),
                                 ),
                               );
+                              signup();
                             } else if (!agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'Please agree to the processing of personal data',
+                                    'Debe aceptar el uso de datos personales',
                                   ),
                                 ),
                               );
                             }
                           },
-                          child: const Text('Sign up'),
                         ),
                       ),
-                      const SizedBox(height: 30.0),
-                      // sign up divider
+
+                      const SizedBox(height: 40),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withAlpha(50),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
-                            child: Text(
-                              'Sign up with',
-                              style: TextStyle(color: Colors.black45),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withAlpha(50),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      // sign up social media logo
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Icon(FontAwesome.apple_brand),
-                        ],
-                      ),
-                      const SizedBox(height: 25.0),
-                      // already have an account
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Already have an account? ',
-                            style: TextStyle(color: Colors.black45),
-                          ),
+                          const Text('¿Ya tienes una cuenta? ',
+                              style: TextStyle(color: Colors.black45)),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -245,16 +164,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               );
                             },
                             child: Text(
-                              'Sign in',
+                              'Iniciar sesión',
                               style: TextStyle(
+                                color: AppColors.secondary,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.backgroundLight,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20.0),
+
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

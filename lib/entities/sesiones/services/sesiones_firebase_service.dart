@@ -358,3 +358,20 @@ Future<Map<String, List<Map<String, dynamic>>>> getSesionesPorRango({
 
   return sesionesPorFecha;
 }
+
+Future<String> getNombreCliente(String clienteId) async {
+  try {
+    final doc = await FirebaseFirestore.instance
+        .collection('clientes')
+        .doc(clienteId)
+        .get();
+
+    if (!doc.exists) return "Sin nombre";
+
+    final data = doc.data() as Map<String, dynamic>;
+    return data['nombre'] ?? "Sin nombre";
+  } catch (e) {
+    return "Sin nombre";
+  }
+}
+

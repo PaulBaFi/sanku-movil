@@ -6,7 +6,6 @@ import 'package:sanku_pro/core/routes/app_routes_index.dart';
 import 'package:sanku_pro/entities/sesiones/services/sesiones_firebase_service.dart';
 import 'package:sanku_pro/presentation/widgets/widget_app_bar.dart';
 import 'package:sanku_pro/presentation/widgets/widget_button.dart';
-import 'package:sanku_pro/presentation/widgets/widget_button_text.dart';
 
 class ClienteSesionesPage extends StatefulWidget {
   final String clienteId;
@@ -521,6 +520,7 @@ class _ClienteSesionesPageState extends State<ClienteSesionesPage> {
     if (confirm == true) {
       try {
         await completarSesion(sesionId);
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Sesión completada correctamente'),
@@ -529,6 +529,7 @@ class _ClienteSesionesPageState extends State<ClienteSesionesPage> {
         );
         _loadSesiones();
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
         );

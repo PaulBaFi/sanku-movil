@@ -275,6 +275,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+// ignore: camel_case_types
 class sectionTitle extends StatelessWidget {
   const sectionTitle({super.key, required this.title});
 

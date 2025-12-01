@@ -34,6 +34,7 @@ class _UpdateUsernameScreenState extends State<UpdateUsernameScreen> {
         errorMessage = e.message ?? 'An error occurred';
       });
       ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
         context,
       ).showSnackBar(SnackBar(content: Text(errorMessage)));
     }

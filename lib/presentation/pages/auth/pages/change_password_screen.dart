@@ -36,12 +36,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         email: _controllerEmail.text,
       );
       showSnackBarSuccess();
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message ?? 'An error occurred';
       });
       ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
         context,
       ).showSnackBar(SnackBar(content: Text(errorMessage)));
     }

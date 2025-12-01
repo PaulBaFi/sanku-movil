@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Horarios',
+                    'Agenda del día',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -232,9 +232,6 @@ class _HomePageState extends State<HomePage> {
                         : RefreshIndicator(
                             onRefresh: _loadSesiones,
                             child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
                               itemCount: currentSessions.length,
                               itemBuilder: (context, index) {
                                 final sesion = currentSessions[index];

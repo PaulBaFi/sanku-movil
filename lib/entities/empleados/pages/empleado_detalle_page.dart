@@ -166,11 +166,18 @@ class _EmpleadoDetallePageState extends State<EmpleadoDetallePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(value?.toString() ?? "-", maxLines: 3),
+          Text(
+            "$label: ",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            value?.toString() ?? "-",
+            maxLines: 3,
+            style: TextStyle(fontSize: 14),
+          ),
         ],
       ),
     );

@@ -9,6 +9,7 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

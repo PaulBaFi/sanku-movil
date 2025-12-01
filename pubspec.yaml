@@ -28,6 +28,5 @@ flutter:
   assets:
     - assets/logo_sanku.png
     - assets/background.png
-    - assets/pattern.png
     - assets/planta.png
     - assets/sala.png

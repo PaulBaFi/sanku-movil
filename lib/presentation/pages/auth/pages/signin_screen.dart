@@ -122,7 +122,7 @@ class _SigninScreenState extends State<SigninScreen> {
                               signIn();
                             }
                           },
-                          text: "Registrarse",
+                          text: "Ingresar",
                         ),
                       ),
                       SizedBox(height: 40.0),

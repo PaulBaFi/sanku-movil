@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sanku_pro/core/constants/app_colors.dart';
 import 'package:sanku_pro/core/routes/app_routes.dart';
-import 'package:sanku_pro/presentation/widgets/widget_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -12,7 +12,10 @@ class WelcomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('assets/sala.png', fit: BoxFit.contain),
+            child: Image.asset(
+              'assets/sala.png',
+              fit: BoxFit.cover,
+            ),
           ),
 
           SafeArea(
@@ -30,27 +33,61 @@ class WelcomeScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: WidgetButton(
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 70,
+                        child: ElevatedButton(
                           onPressed: () => context.push(AppRoutes.signin),
-                          text: "Ingresar",
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondary,
+                            foregroundColor: AppColors.surfaceLight,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20.0),
+                              ), // Adjust the value for desired roundness
+                            ),
+                          ),
+                          child: const Text(
+                            "Ingresar",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: WidgetButton(
+                    ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: SizedBox(
+                        height: 70,
+                        child: ElevatedButton(
                           onPressed: () => context.push(AppRoutes.signup),
-                          text: "Registrarse",
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20.0),
+                              ), // Adjust the value for desired roundness
+                            ),
+                          ),
+                          child: const Text(
+                            "Registrarse",
+                            style: TextStyle(
+                              color: AppColors.secondary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (v) => setState(() {
                               agreePersonalData = v!;
                             }),
-                            activeColor: AppColors.backgroundLight,
+                            activeColor: AppColors.secondary,
                           ),
                           const Expanded(
                             child: Text(
